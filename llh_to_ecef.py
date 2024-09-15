@@ -24,7 +24,6 @@ R_E_KM = 6378.1363
 E_E    = 0.081819221456
 
 # helper functions
-
 def calc_denom(ecc,lat_rad):
     return math.sqrt(1.0-(ecc**2)*(math.sin(lat_rad))**2)
 
@@ -37,8 +36,7 @@ lat_deg = float('nan')
 lon_deg = float('nan')
 hae_km  = 0.0
 
-lat_rad = lat_deg*math.pi/180.0
-lon_rad = lon_deg*math.pi/180.0
+
 # parse script arguments
 if len(sys.argv)==4:
   lat_deg = float(sys.argv[1])
@@ -52,12 +50,14 @@ else:
    exit()
 
 # write script below this line
+lat_rad = lat_deg*math.pi/180.0
+lon_rad = lon_deg*math.pi/180.0
 denom = calc_denom(E_E,lat_rad)
 C_E = R_E_KM/denom
-S_E = (R_E_KM*(1-E_E*E_E))/denom
+S_E = R_E_KM*(1-E_E**2)/denom
 r_x_km = (C_E+hae_km)*math.cos(lat_rad)*math.cos(lon_rad)
-r_y_km = (S_E+hae_km)*math.cos(lat_rad)*math.sin(lon_rad)
+r_y_km = (C_E+hae_km)*math.cos(lat_rad)*math.sin(lon_rad)
 r_z_km = (S_E+hae_km)*math.sin(lat_rad)
-print('r_x_km: '+r_x_km)
-print('r_y"km: '+r_y_km)
-print('r_z_km: '+r_z_km)
+print(r_x_km)
+print(r_y_km)
+print(r_z_km)
